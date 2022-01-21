@@ -1,0 +1,19 @@
+{% extends 'todowoo_app_templates/base_template.html' %}
+
+{% block content %}
+
+<h1>Se connecter</h1>
+
+<h2>{{ error }}</h2>
+
+<!-- Le POST passe des infos non-visibles dans l'url et si on ne met pas le tag ACTION alors le POST le fait sur lui-même la même page
+Mettre une url et faire enter c'est une requête GET
+On peut seulement poster (POST) des informations à travers un form  --> 
+<form method="POST">
+    <!-- csrf_token est une chose cachée donc elle peut aller n'importe où dans la page -->  
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="Submit">Se connecter</button>
+</form>
+
+{%endblock %}
