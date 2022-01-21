@@ -1,0 +1,15 @@
+{% extends 'todowoo_app_templates/base_template.html' %}
+
+{% block content %}
+
+<h1>Créer</h1>
+
+<h2>{{ error }}</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="Submit">Créer</button>
+</form>
+
+{%endblock %}

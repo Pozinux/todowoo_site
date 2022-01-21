@@ -1,0 +1,27 @@
+{% extends 'todowoo_app_templates/base_template.html' %}
+
+{% block content %}
+
+{{ error }}
+
+{{todo.title }}
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="Submit">Enregistrer</button>
+</form>
+
+
+<form method="POST" action="{% url 'completetodo' todo.id %}">
+    {% csrf_token %}
+    <button type="Submit">Terminer</button>
+</form>
+
+
+<form method="POST" action="{% url 'deletetodo' todo.id %}">
+    {% csrf_token %}
+    <button type="Submit">Supprimer</button>
+</form>
+
+{%endblock %}
