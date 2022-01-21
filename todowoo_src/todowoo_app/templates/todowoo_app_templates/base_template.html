@@ -1,7 +1,11 @@
 
 {% if user.is_authenticated %}
 
-Logged In as {{ user.username }}
+Connecté en tant que {{ user.username }}
+
+<a href="{% url 'createtodo' %}">Créer</a>
+<a href="{% url 'currenttodos' %}">En cours</a>
+<a href="{% url 'completedtodos' %}">Terminées</a>
 
 <form action="{% url 'logoutuser' %}" method="POST">
     <!-- csrf_token est une chose cachée donc elle peut aller n'importe où dans la page -->  

@@ -124,6 +124,9 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Si on tente d'exécuter une vue qui a le decorator @login_required et que l'on est pas connecté, alors on redirige vers /login
+LOGIN_URL = '/login' 
+
 
 # Charger les local settings :
 try:

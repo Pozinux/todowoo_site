@@ -7,6 +7,7 @@ from django.contrib.auth import login, logout, authenticate
 from .forms import TodoForm
 from .models import Todo
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 
 def home(request):
     return render(request, 'todowoo_app_templates/home.html')
@@ -46,6 +47,7 @@ def loginuser(request):
             return redirect('currenttodos')
 
 
+@login_required
 def logoutuser(request):
     # On ajoute ce test car les navigateurs chargent en avance les liens sur lesquels on pourrait cliquer pour que ça aille plus vite au
     # moment où on va cliquer dessus. Donc il va charger le logout dès que la page va se charger donc déconnecter le user
@@ -55,6 +57,7 @@ def logoutuser(request):
         return redirect('home')
 
 
+@login_required
 def createtodo(request):
     if request.method == 'GET':
         return render(request, 'todowoo_app_templates/createtodo.html', {'form': TodoForm()})
@@ -68,12 +71,21 @@ def createtodo(request):
         except ValueError:
             return render(request, 'todowoo_app_templates/createtodo.html', {'form': TodoForm(), 'error': 'Mauvaises données entrées. Essayez de nouveau.'})
 
+
+@login_required
 def currenttodos(request):
     # Récupérer tous les objets de la base mais en filtrant sur ceux du user + et ceux qui ne sont pas encore en statut complété
     todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True)
     return render(request, 'todowoo_app_templates/currenttodos.html', {'todos':todos})
 
 
+@login_required
+def completedtodos(request):
+    todos = Todo.objects.filter(user=request.user, datecompleted__isnull=False).order_by('-datecompleted')
+    return render(request, 'todowoo_app_templates/completedtodos.html', {'todos':todos})
+
+
+@login_required
 def viewtodo(request, todo_pk):
     todo = get_object_or_404(Todo, pk=todo_pk, user=request.user)
     if request.method == 'GET':
@@ -88,6 +100,7 @@ def viewtodo(request, todo_pk):
             return render(request, 'todowoo_app_templates/viewtodo.html', {'todo':todo, 'form': form, 'error': "Mauvaises données entrées. Essayez de nouveau."})
 
 
+@login_required
 def completetodo(request, todo_pk):
     todo = get_object_or_404(Todo, pk=todo_pk, user=request.user)
     if request.method == 'POST':
@@ -95,7 +108,8 @@ def completetodo(request, todo_pk):
         todo.save()
         return redirect('currenttodos')
 
-        
+
+@login_required   
 def deletetodo(request, todo_pk):
     todo = get_object_or_404(Todo, pk=todo_pk, user=request.user)
     if request.method == 'POST':
