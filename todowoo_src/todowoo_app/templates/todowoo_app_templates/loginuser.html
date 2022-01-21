@@ -1,19 +1,34 @@
-{% extends 'todowoo_app_templates/base_template.html' %}
+{% extends "todowoo_app_templates/base_template.html" %}
 
 {% block content %}
-
-<h1>Se connecter</h1>
-
-<h2>{{ error }}</h2>
-
-<!-- Le POST passe des infos non-visibles dans l'url et si on ne met pas le tag ACTION alors le POST le fait sur lui-même la même page
-Mettre une url et faire enter c'est une requête GET
-On peut seulement poster (POST) des informations à travers un form  --> 
-<form method="POST">
-    <!-- csrf_token est une chose cachée donc elle peut aller n'importe où dans la page -->  
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="Submit">Se connecter</button>
-</form>
-
-{%endblock %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-5">
+            <h2>Login</h2>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-5">
+            {% if error %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endif %}
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" class="form-control" id="username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" class="form-control" id="password">
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+            <hr>
+            <div class="text-center">
+                Need an account? <a href="{% url 'signupuser' %}">Sign Up here</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
